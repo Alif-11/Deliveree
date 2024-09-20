@@ -3,8 +3,16 @@ import React from 'react';
 import Greeting from '../Greeting';
 import PatronAccountPage from '../PatronAccountPage';
 import { useState } from 'react';
+import MapBox from '../MapBoxComponent';
+import MapBoxComponent from '../MapBoxComponent';
+
+function handleSubmit(e) {
+  e.preventDefault();
+  console.log("Form Reload (which is the form's default behavior) prevented!")
+}
 
 function ErrandForm(props) {
+
   const [desc, setDesc] = useState("");
   const [pLoc, setPLoc] = useState("");
   const [dLoc, setDLoc] = useState("");
@@ -17,6 +25,9 @@ function ErrandForm(props) {
       <>
         <Greeting title="Errand Form" />
         <label htmlFor="item_name">Item Name:</label> {" "}
+
+
+
         <input type="text" id="item_name" name="item_name" value={name} onChange={(e) => {
           setName(e.target.value);
         }} />
@@ -43,6 +54,20 @@ function ErrandForm(props) {
         }}></textarea>
         <br />
         <br />
+        {/* <MapBoxComponent /> - uncomment this only if you get AddressForm, AutoCompleteInput, and MapBoxComponent working. */}
+
+        <br />
+        <br />
+        <br />
+
+        <MapBoxComponent></MapBoxComponent>
+
+        <br />
+        <br />
+
+        <br />
+        <br />
+
         <button onClick={async () => {
           const res = await fetch("http://localhost:8080/createErrand", {
             method: "POST",
@@ -77,6 +102,7 @@ function ErrandForm(props) {
         <button onClick={() => {
           setPatron(true);
         }}>Go Back</button>
+
       </>
 
     );

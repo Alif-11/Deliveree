@@ -11,6 +11,8 @@ app.use(cors())
 app.use(express.json())
 
 const PatronsModel = require('./models/patrons')
+const ErrandsModel = require('./models/errands')
+const RunnersModel = require('./models/runners')
 
 mongoose.connect("mongodb://localhost/deliveree").then(() => {
   console.log("mongoose connection");
@@ -40,26 +42,50 @@ app.post("/name", (req, res) => {
   res.json({ message: "name endpoint response" });
 })
 
+
+// this currently only works with patrons
 app.post("/signup", async (req, res) => {
   console.log(req);
   console.log(req.body);
   console.log(req.body.password);
+  console.log("parent", req.body.parent);
 
   let data = [];
-  await PatronsModel.find({ username: req.body.username }).then(bob => {
-    //console.log(bob);
-    data = bob;
-  });
-  console.log("data");
-  console.log(data);
-  if (data.length === 0) { // this is a new signup
-    data = {
-      username: req.body.username,
-      password: req.body.password
+  if (req.body.parent == "patron") {
+    await PatronsModel.find({ username: req.body.username }).then(bob => {
+      //console.log(bob);
+      data = bob;
+    });
+    console.log("data");
+    console.log(data);
+    if (data.length === 0) { // this is a new signup
+      data = {
+        username: req.body.username,
+        password: req.body.password
+      }
+      await PatronsModel.create(data);
+    } else {
+      data = [];
+      console.log("This user already exists.")
     }
-    await PatronsModel.create(data);
-  } else {
-    data = [];
+  } else if (req.body.parent == "runner") {
+    await RunnersModel.find({ username: req.body.username }).then(bob => {
+      //console.log(bob);
+      data = bob;
+    });
+    console.log("data");
+    console.log(data);
+    if (data.length === 0) { // this is a new signup
+      data = {
+        username: req.body.username,
+        password: req.body.password
+      }
+      await RunnersModel.create(data);
+    } else {
+      data = [];
+      console.log("This user already exists.")
+    }
+
   }
 
   console.log("Ooga");
@@ -72,36 +98,85 @@ app.post("/signup", async (req, res) => {
 
 })
 
-app.get("/getErrand", (req, res) => {
-  res.json({ errands: "No Errands!" });
+app.get("/getErrand", async (req, res) => {
+  let errands_list = []
+  await ErrandsModel.find({}).then(errands => {
+
+    if (errands.length > 0) {
+      console.log("errands from the model", errands[0].item_description);
+    } else {
+      console.log("errands from the model (errands has length 0)", errands)
+    }
+
+
+    for (let i = 0; i < errands.length; i++) {
+      errands_list.push({
+        item_name: errands[i].item_name,
+        item_description: errands[i].item_description,
+        pickup_location: errands[i].pickup_location,
+        dropoff_location: errands[i].dropoff_location
+      })
+    }
+  })
+  console.log("get errands", errands_list)
+  res.json({ success: true, list: errands_list })
 })
 
-app.post("/createErrand", (req, res) => {
+app.post("/createErrand", async (req, res) => {
   console.log(req);
   console.log(req.body);
-  res.json({ success: true });
+  await ErrandsModel.create({
+    item_name: req.body.item_name,
+    item_description: req.body.item_description,
+    pickup_location: req.body.pickup_location,
+    dropoff_location: req.body.dropoff_location
+  });
+  res.json({
+    success: true
+  })
 })
 
+
+// this currently only works with patrons
 app.post("/login", async (req, res) => {
   console.log(req);
   console.log(req.body);
   console.log(req.body.password);
+  console.log("parent", req.body.parent);
 
   let data = [];
-  await PatronsModel.find({ username: req.body.username }).then(bob => {
-    //console.log(bob);
-    data = bob;
-  });
-  console.log("data");
-  console.log(data);
-  if (data.length !== 0) { // this is an old login
-    data = {
-      username: req.body.username,
-      password: req.body.password
+  if (req.body.parent == "patron") {
+    await PatronsModel.find({ username: req.body.username }).then(bob => {
+      //console.log(bob);
+      data = bob;
+    });
+    console.log("data");
+    console.log(data);
+    if (data.length !== 0) { // this is an old login
+      console.log("OLD LOGIN")
+      data = {
+        username: req.body.username,
+        password: req.body.password
+      }
+    } else {
+      data = [];
     }
-    await PatronsModel.create(data);
-  } else {
-    data = [];
+  } else if (req.body.parent == "runner") {
+    await RunnersModel.find({ username: req.body.username }).then(bob => {
+      //console.log(bob);
+      data = bob;
+    });
+    console.log("data");
+    console.log(data);
+    if (data.length !== 0) { // this is an old login
+      console.log("OLD LOGIN")
+      data = {
+        username: req.body.username,
+        password: req.body.password
+      }
+    } else {
+      data = [];
+    }
   }
 
   console.log("Ooga");

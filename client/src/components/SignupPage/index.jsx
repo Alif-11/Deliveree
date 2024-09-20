@@ -52,6 +52,7 @@ function SignupPage(props) {
               body: JSON.stringify({
                 username: user,
                 password: pass,
+                parent: props.parent
               }),
               headers: {
                 "Content-type": "application/json; charset=UTF-8"
