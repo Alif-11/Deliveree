@@ -76,7 +76,8 @@ function ErrandForm(props) {
                 item_name: name,
                 item_description: desc,
                 pickup_location: pLoc,
-                dropoff_location: dLoc
+                dropoff_location: dLoc,
+                username: props.data.username
               }),
             headers: {
               "Content-type": "application/json; charset=UTF-8"

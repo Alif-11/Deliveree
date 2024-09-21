@@ -63,7 +63,8 @@ app.post("/signup", async (req, res) => {
         username: req.body.username,
         password: req.body.password
       }
-      await PatronsModel.create(data);
+      const patronSchemaObject = new PatronsModel(data);
+      patronSchemaObject.save();
     } else {
       data = [];
       console.log("This user already exists.")
@@ -80,7 +81,8 @@ app.post("/signup", async (req, res) => {
         username: req.body.username,
         password: req.body.password
       }
-      await RunnersModel.create(data);
+      let runnerSchemaObject = new RunnersModel(data);
+      runnerSchemaObject.save();
     } else {
       data = [];
       console.log("This user already exists.")
@@ -125,12 +127,56 @@ app.get("/getErrand", async (req, res) => {
 app.post("/createErrand", async (req, res) => {
   console.log(req);
   console.log(req.body);
-  await ErrandsModel.create({
+  newErrand = {
     item_name: req.body.item_name,
     item_description: req.body.item_description,
     pickup_location: req.body.pickup_location,
     dropoff_location: req.body.dropoff_location
-  });
+  };
+  console.log("Alternate Errand Creation Scheme");
+  errandSchemaObject = new ErrandsModel(newErrand);
+  errandSchemaObject.save();
+  let creatingPatron = [];
+  await PatronsModel.find({ username: req.body.username }).then(returnedData => {
+    creatingPatron = returnedData[0];
+  })
+
+  console.log("Patron!")
+  console.log(creatingPatron);
+
+
+
+  const errandsOfThePatron = creatingPatron.errandsCreated;
+  errandsOfThePatron.push(errandSchemaObject);
+
+  let checkIssue = [];
+
+
+  let patronErrandUpdate = []
+  await PatronsModel.findOneAndUpdate({ username: req.body.username }, { errandsCreated: errandsOfThePatron }).then(returnedData => {
+    patronErrandUpdate = returnedData;
+  })
+
+  //console.log("Check for the update");
+  //console.log(patronErrandUpdate);
+
+
+  //console.log("final check")
+  let patronus = [];
+  await PatronsModel.find({ username: req.body.username }).then(returnedData => {
+    patronus = returnedData;
+  })
+
+  let errandor = [];
+  await ErrandsModel.findById(patronus[0].errandsCreated[0]).then(returnedErrand => {
+    errandor = returnedErrand;
+  })
+
+  //console.log("Check patrons")
+  //console.log(patronus[0].errandsCreated);
+
+  console.log("Check errand")
+  console.log(errandor);
   res.json({
     success: true
   })

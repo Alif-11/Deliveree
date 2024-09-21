@@ -67,12 +67,8 @@ function PatronAccountPage(props) {
         <Greeting title="Patron Account" />
         <p>Hey {props.data.username}! How is it going?</p>
         <h2>Active Errands</h2>
-        {errandsList.length == 0 ? '' : <ErrandList errandsList={errandsList} />}
-        {/*<p>{String(!yourErrands["success"])}</p>*/}
-        {/*<p>{yourErrands["list"][0].item_name}</p>*/}
-        {/*{yourErrands["list"].map(errand_from_list => {
-          <p>{errand_from_list["item_name"]}</p>
-        })}*/}
+        {errandsList.length == 0 ? <p>You have no active errands!</p> : <ErrandList errandsList={errandsList} />}
+
         <button onClick={() => {
           setErrand(true);
           setLogout(false);
