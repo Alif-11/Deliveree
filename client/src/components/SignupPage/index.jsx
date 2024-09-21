@@ -47,7 +47,7 @@ function SignupPage(props) {
             setSuccess(false);
             setFailMessage("Signup failed. Please fill in all fields.")
           } else {
-            const res = await fetch("http://localhost:8080/signup", {
+            const res = await fetch("https://deliveree-phi.vercel.app/signup", {
               method: "POST",
               body: JSON.stringify({
                 username: user,
