@@ -35,7 +35,7 @@ function SignupPage(props) {
         <br />
         <br />
         <label htmlFor="pass_word">Pass Word:</label> {" "}
-        <input type="text" id="pass_word" name="pass_word" value={pass} onChange={(e) => {
+        <input type="password" id="pass_word" name="pass_word" value={pass} onChange={(e) => {
           setPass(e.target.value);
         }} />
         <br />
