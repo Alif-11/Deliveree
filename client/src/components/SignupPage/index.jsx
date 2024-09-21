@@ -49,6 +49,7 @@ function SignupPage(props) {
           } else {
             const res = await fetch("https://deliveree-phi.vercel.app/signup", {
               method: "POST",
+              mode: "cors",
               body: JSON.stringify({
                 username: user,
                 password: pass,
