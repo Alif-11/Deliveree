@@ -11,7 +11,7 @@ let corsOptions = {
    origin : ['https://deliveree-frontend.vercel.app', 'http://localhost:5173'],
 }
 
-app.use(cors())
+app.use(cors(corsOptions))
 app.use(express.json())
 
 const PatronsModel = require('./models/patrons')
