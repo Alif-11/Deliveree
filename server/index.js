@@ -7,6 +7,10 @@ require('dotenv').config()
 const { DB_URL, SERVER_APP, SERVER_PORT } = process.env
 console.log(process.env)
 
+let corsOptions = {
+   origin : ['https://deliveree-frontend.vercel.app', 'http://localhost:5173'],
+}
+
 app.use(cors())
 app.use(express.json())
 
