@@ -46,6 +46,8 @@ function ErrandForm(props) {
           setPLoc(e.target.value);
         }}></textarea>
         <br />
+        <MapBoxComponent></MapBoxComponent>
+        <br />
         <br />
         <label htmlFor="dropoff_location">Dropoff Location:</label>
         <br />
@@ -53,21 +55,12 @@ function ErrandForm(props) {
           setDLoc(e.target.value);
         }}></textarea>
         <br />
+        <MapBoxComponent></MapBoxComponent>
+        <br />
         <br />
         {/* <MapBoxComponent /> - uncomment this only if you get AddressForm, AutoCompleteInput, and MapBoxComponent working. */}
 
         <br />
-        <br />
-        <br />
-
-        <MapBoxComponent></MapBoxComponent>
-
-        <br />
-        <br />
-
-        <br />
-        <br />
-
         <button onClick={async () => {
           const res = await fetch("http://localhost:8080/createErrand", {
             method: "POST",

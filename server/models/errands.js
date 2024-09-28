@@ -2,8 +2,7 @@ const { Schema, model } = require('mongoose')
 
 const schema = new Schema({
   item_name: {
-    type: String,
-    required: true,
+    type: String
   },
   item_description: String,
   pickup_location: String,

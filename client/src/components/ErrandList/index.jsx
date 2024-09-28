@@ -14,11 +14,10 @@ function ErrandList(props) {
         <ul className="no-bullet-points">
           {props.errandsList.map((errand_dict) => {
             return <>
-              <li>A New Errand!</li>
-              <li>"Item Name": {errand_dict["item_name"]}</li>
-              <li>"Item Description": {errand_dict["item_description"]}</li>
-              <li>"Pickup Location": {errand_dict["pickup_location"]}</li>
-              <li>"Dropoff Location": {errand_dict["dropoff_location"]}</li>
+              <li>Item Name: {errand_dict["item_name"]}</li>
+              <li>Item Description: {errand_dict["item_description"]}</li>
+              <li>Pickup Location: {errand_dict["pickup_location"]}</li>
+              <li>Dropoff Location: {errand_dict["dropoff_location"]}</li>
               {/*
               <button onClick={() => {
                 setErrandPage(true);
