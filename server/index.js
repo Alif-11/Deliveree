@@ -7,7 +7,11 @@ require('dotenv').config()
 const { DB_URL, SERVER_APP, SERVER_PORT } = process.env
 console.log(process.env)
 
-app.use(cors())
+
+
+app.use(cors({
+  origin: '*'
+}))
 app.use(express.json())
 
 const PatronsModel = require('./models/patrons')
